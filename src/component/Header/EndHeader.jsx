@@ -4,7 +4,7 @@ import Logout from "./EndHeader/Logout";
 
 export default function EndHeader() {
   return (
-    <div className="mt-auto">
+    <div id="end-header">
       <Ava></Ava>
       <Logout></Logout>
     </div>

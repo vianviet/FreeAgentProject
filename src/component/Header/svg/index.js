@@ -7,6 +7,10 @@ import account from './account.svg'
 import actaccount from './actaccount.svg'
 import setting from './setting.svg'
 import actsetting from './actsetting.svg'
+import info from './info.svg'
+import actinfo from './actinfo.svg'
+import angledownblack from './angledownblack.svg'
+import angledownwhite from './angledownwhite.svg'
 
 export {
     calendar,
@@ -17,5 +21,9 @@ export {
     actaccount,
     setting,
     actsetting,
-    calendar2
+    calendar2,
+    info,
+    actinfo,
+    angledownblack,
+    angledownwhite
 }

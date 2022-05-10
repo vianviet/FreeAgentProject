@@ -5,7 +5,7 @@ import UserBanner from "../../component/Header/UserBanner";
 
 export default function Header() {
   return (
-    <div id="header" className="d-flex flex-column">
+    <div id="header">
       <UserBanner></UserBanner>
       <Navbar></Navbar>
       <EndHeader></EndHeader>

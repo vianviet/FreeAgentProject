@@ -10,7 +10,7 @@ export default function Logout() {
     navigate("/login");
   };
   return (
-    <div className="logout d-flex justify-content-center align-items-center">
+    <div className="logout d-flex justify-content-center align-items-center mb-2 ml-3">
       <div
         className="d-flex flex-column justify-content-center align-items-center "
         onClick={() => handleClick()}

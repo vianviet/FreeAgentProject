@@ -4,9 +4,9 @@ import Header from "./Header/Header";
 
 export default function HomePage() {
   return (
-    <div id="home-page" className="d-flex flex-row">
+    <div id="home-page">
       <Header></Header>
-      <div id="main" className="ml-5 mt-4">
+      <div id="main">
         <Outlet />
       </div>
     </div>

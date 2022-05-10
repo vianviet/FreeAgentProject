@@ -51,11 +51,17 @@ export default function CalendarPage() {
       </div>
       <div className="calendar-header d-flex my-1 ml-1 justify-content-between">
         <div className="left-calendar-header d-flex py-1 ">
-          <div onClick={() => handlePreMonth()}>{`<`}</div>
-          <div className="mx-3">
+          <div
+            className="pre-month"
+            onClick={() => handlePreMonth()}
+          >{`<`}</div>
+          <div className="mx-3 current-time">
             {change.getFullYear() + " 年 " + change.getMonth() + " 月 "}
           </div>
-          <div onClick={() => handleNextMonth()}>{`>`}</div>
+          <div
+            className="next-month"
+            onClick={() => handleNextMonth()}
+          >{`>`}</div>
         </div>
         <div className="right-calendar-header ">
           <SelectText
@@ -91,7 +97,11 @@ export default function CalendarPage() {
             data={Status}
             name="Select Status"
           ></SelectText>
-          <Button className="mx-1" type="success" icon={<PlusCircleOutlined />}>
+          <Button
+            className="right-calendar-header-button mx-1"
+            type="success"
+            icon={<PlusCircleOutlined />}
+          >
             Set a Call
           </Button>
           <Button
@@ -104,7 +114,7 @@ export default function CalendarPage() {
           {test && <div>Hello</div>}
         </div>
       </div>
-      <div className="calendar-content d-flex justify-content-between">
+      <div className="calendar-content ">
         <Calendar
           onNavigate={onNavigate}
           localizer={localizer}
@@ -112,11 +122,6 @@ export default function CalendarPage() {
           events={events}
           startAccessor="start"
           endAccessor="end"
-          style={{
-            height: 744,
-            width: 840,
-            backgroundColor: "white",
-          }}
           components={{
             toolbar: CalendarToolbar,
             month: {
@@ -137,7 +142,7 @@ export default function CalendarPage() {
           messages={{
             showMore: () => (
               <span
-                className="ml-4"
+                className="show-more ml-4"
                 role="presentation"
                 // onClick={() =>
                 //   this.setState({ calendarOverlay: true, currentTitleData: {} })
@@ -148,7 +153,7 @@ export default function CalendarPage() {
             ),
           }}
         />
-        <ListClient></ListClient>
+        <ListClient time={change}></ListClient>
       </div>
     </>
   );
