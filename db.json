@@ -1,0 +1,40 @@
+{
+  "posts": [
+    {
+      "title": "json-serverrrr",
+      "author": "typicoderrrrrrrr",
+      "id": 1
+    },
+    {
+      "username": "admin",
+      "password": "admin",
+      "id": 2
+    },
+    {
+      "title": "json-new",
+      "author": "typicoderrrrrrrr",
+      "id": 3
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "user": [
+    {
+      "username": "adminnnnn",
+      "password": "admin",
+      "id": "abc"
+    },
+    {
+      "username": "user",
+      "password": "user"
+    }
+  ]
+}

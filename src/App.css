@@ -1,0 +1,213 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+}
+
+
+/* test */
+
+html,
+body,
+#root,
+.App {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: var(--background-color);
+}
+
+:root {
+    --background-color: #D4E3FF;
+}
+
+
+/* CSS login form here */
+
+#login-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#login-page .login {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 1);
+    align-self: center;
+    height: 740px;
+    width: 1200px;
+    left: 120px;
+    top: 80px;
+    border-radius: 12px;
+    font-family: Lato;
+}
+
+.login .header {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 45px;
+    letter-spacing: 0.168em;
+    text-align: center;
+    color: rgba(34, 100, 209, 1)
+}
+
+.login .input {
+    border: 1px solid rgba(180, 180, 187, 1);
+    border-radius: 3px;
+    height: 40px;
+    width: 320px;
+    left: 0px;
+    top: 0px;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.login .login-btn {
+    background: rgba(34, 100, 209, 1);
+    color: white;
+    height: 36px;
+    width: 319px;
+    top: 128px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.login .footer {
+    font-size: 12px;
+}
+
+
+/* style home page here */
+
+#home-page {
+    justify-content: left;
+}
+
+
+/* Style header */
+
+#header {
+    width: 96px;
+    height: 900px;
+    background-color: rgba(255, 255, 255, 1);
+    justify-content: start !important;
+}
+
+#user-banner {
+    height: auto;
+    margin: 0 auto;
+    width: 64px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(180, 180, 187, 1)
+}
+
+.user-banner-item {
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(19, 55, 116, 1);
+}
+
+.navbar a {
+    border-radius: 50%;
+    display: flex;
+    width: 36px;
+    height: 36px;
+    margin: 18px auto;
+}
+
+.navbar a img {
+    align-items: center;
+    margin: auto;
+}
+
+.activeNav {
+    background-color: rgba(41, 121, 255, 1);
+}
+
+.inactiveNav {
+    background-color: rgba(235, 242, 255, 1);
+}
+
+.logout {
+    margin: 5px auto;
+    width: 64px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(180, 180, 187, 1);
+}
+
+.logout :hover {
+    opacity: 0.5;
+}
+
+
+/* css main here */
+
+#main {
+    width: 1264px;
+    height: 900px;
+}
+
+
+/* css calendar here */
+
+.calendar-title {
+    font-family: Mplus 1p;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: rgba(19, 55, 116, 1);
+    text-align: left;
+}
+
+.calendar-header {
+    cursor: pointer;
+    color: rgba(19, 55, 116, 1);
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: center;
+}
+
+.rbc-header {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    height: 28px;
+    color: rgba(27, 78, 163, 1);
+}
+
+.content-event {
+    border-bottom: 1px solid rgba(180, 180, 187, 1);
+}
+
+.green-circle {
+    background-color: green;
+    width: 12px;
+    height: 12px;
+}
+
+
+/* CSS list client here */
+
+.list-client {
+    height: 744px;
+    width: 408px;
+    background-color: white;
+}
+
+.list-client-title {
+    text-align: center;
+    color: white;
+    height: 28px;
+    width: 408px;
+    background-color: rgba(34, 100, 209, 1);
+}
