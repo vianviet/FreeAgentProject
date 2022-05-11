@@ -10,7 +10,10 @@ export default function ListClient(props) {
       <div className="list-client-body">
         <div className="list-client-content">
           <div className="list-client-current-time">
-            {props.time.getFullYear() + " 年 " + props.time.getMonth() + " 月 "}
+            {props.time.getFullYear() +
+              " 年 " +
+              (props.time.getMonth() + 1) +
+              " 月 "}
           </div>
           <div className="total-client">
             Total Client :<div className="client-count">99</div>
@@ -39,32 +42,32 @@ export default function ListClient(props) {
           <div className="list-client-content-detail">
             <ClientDetail
               name="真佐人"
-              status={{ name: "未対応", color: "color-b-warning" }}
+              status="warning"
               button="ビデオ通話リンク作成"
             ></ClientDetail>
             <ClientDetail
               name="壮史朗"
-              status={{ name: "連絡不能", color: "color-b-error" }}
+              status="error"
               button="ビデオ通話"
             ></ClientDetail>
             <ClientDetail
               name="伸太郎"
-              status={{ name: "連絡済", color: "color-b-success" }}
+              status="success"
               button="ビデオ通話"
             ></ClientDetail>
             <ClientDetail
               name="美桜"
-              status={{ name: "未対応", color: "color-b-warning" }}
+              status="warning"
               button="ビデオ通話"
             ></ClientDetail>
             <ClientDetail
               name="美桜"
-              status={{ name: "未対応", color: "color-b-warning" }}
+              status="warning"
               button="ビデオ通話"
             ></ClientDetail>
             <ClientDetail
               name="伸太郎"
-              status={{ name: "絡済", color: "color-b-success" }}
+              status="success"
               button="ビデオ通話"
             ></ClientDetail>
           </div>

@@ -1,4 +1,4 @@
-var events = [{
+export default [{
     title: "真佐人",
     start: new Date("November 1, 2021"),
     end: new Date("November 1, 2021"),
@@ -151,8 +151,3 @@ var events = [{
     start: new Date("November 30, 2021"),
     end: new Date("November 30, 2021"),
 }, ]
-
-export function setEvents(data) {
-    this.events = data;
-}
-export default events

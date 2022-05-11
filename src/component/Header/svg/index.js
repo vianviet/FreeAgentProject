@@ -11,6 +11,7 @@ import info from './info.svg'
 import actinfo from './actinfo.svg'
 import angledownblack from './angledownblack.svg'
 import angledownwhite from './angledownwhite.svg'
+import copy from './copy.svg'
 
 export {
     calendar,
@@ -25,5 +26,6 @@ export {
     info,
     actinfo,
     angledownblack,
-    angledownwhite
+    angledownwhite,
+    copy,
 }
