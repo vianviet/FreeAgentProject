@@ -9,7 +9,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalendarToolbar from "../../component/Main/Calendar/CalendarToolbar";
 import HeaderTable from "../../component/Main/Calendar/HeaderTable";
 import MonthEvent from "../../component/Main/Calendar/MonthEvent";
-import { calendar2 } from "../../component/Header/svg/index";
+import { calendartitle } from "../../component/Header/svg/index";
 import SelectText from "../../component/Main/Calendar/SelectText";
 import { Button } from "antd";
 import { UploadOutlined, PlusCircleOutlined } from "@ant-design/icons";
@@ -65,9 +65,9 @@ export default function CalendarPage() {
   const onChange = (e) => console.log(e._d);
   return (
     <>
-      <div className="calendar-title d-flex">
-        <img src={calendar2} alt=""></img>
-        <div className="ml-1">カレンダー</div>
+      <div className="main-title">
+        <img src={calendartitle} alt=""></img>
+        <div className="ml-2">カレンダー</div>
       </div>
       <div className="calendar-header d-flex my-1 ml-1 justify-content-between">
         <div className="left-calendar-header d-flex py-1 ">
@@ -204,7 +204,7 @@ export default function CalendarPage() {
           messages={{
             showMore: () => (
               <span
-                className="show-more ml-4"
+                className="show-more"
                 role="presentation"
                 // onClick={() =>
                 //   this.setState({ calendarOverlay: true, currentTitleData: {} })

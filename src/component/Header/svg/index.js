@@ -1,5 +1,5 @@
 import calendar from './calendar.svg';
-import calendar2 from './calendar2.svg';
+import calendartitle from './calendar2.svg';
 import actcalendar from './actcalendar.svg'
 import user from './user.svg'
 import actuser from './actuser.svg'
@@ -12,6 +12,8 @@ import actinfo from './actinfo.svg'
 import angledownblack from './angledownblack.svg'
 import angledownwhite from './angledownwhite.svg'
 import copy from './copy.svg'
+import usertitle from './usertitle.svg'
+import accounttitle from './accounttitle.svg'
 
 export {
     calendar,
@@ -22,10 +24,12 @@ export {
     actaccount,
     setting,
     actsetting,
-    calendar2,
+    calendartitle,
     info,
     actinfo,
     angledownblack,
     angledownwhite,
     copy,
+    usertitle,
+    accounttitle,
 }
