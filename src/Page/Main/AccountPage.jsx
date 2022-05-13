@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { accounttitle } from "../../component/Header/svg";
-import { Input, Button, Modal } from "antd";
+import { Input, Button, Modal, Table } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
-import AccountTable from "../../component/Main/Account/AccountTable";
+import columns from "../../component/Main/Account/columns";
+import account from "../../Data/account";
 
 const { Search } = Input;
 
 export default function AccountPage() {
   const [visibleAdd, setVisibleAdd] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const hasSelected = selectedRowKeys.length > 0;
+  const [syncLoading, setSyncLoading] = useState(false);
   const onSearch = (value) => console.log(value);
   const handleOk = () => {
     setConfirmLoading(true);
@@ -20,6 +24,16 @@ export default function AccountPage() {
 
   const handleCancel = () => {
     setVisibleAdd(false);
+  };
+  const onSelectChange = (selectedRowKeys) => {
+    setSelectedRowKeys({ selectedRowKeys });
+  };
+  const reset = () => {
+    setSyncLoading(true);
+    setTimeout(() => {
+      setSelectedRowKeys([]);
+      setSyncLoading(false);
+    }, 1000);
   };
   return (
     <>
@@ -35,7 +49,13 @@ export default function AccountPage() {
             onSearch={onSearch}
             style={{ width: 264 }}
           />
-          <Button className="ml-2" disabled>
+          <Button
+            onClick={() => reset()}
+            className="ml-2"
+            type="primary"
+            disabled={!hasSelected}
+            loading={syncLoading}
+          >
             <SyncOutlined /> Sync
           </Button>
           <Button
@@ -74,29 +94,53 @@ export default function AccountPage() {
             ]}
           >
             <div className="line-add-user d-flex justify-content-between my-3">
-              <div className="label-line-add-user my-auto">
-                <div className="ml-2 ">Mail :</div>
+              <div className="label-line-add-account my-auto">
+                <div className="ml-2 ">Email :</div>
                 <div className="color-dustred">*</div>
               </div>
               <Input placeholder="example" onChange={""} />
             </div>
             <div className="line-add-user d-flex justify-content-between my-3">
-              <div className="label-line-add-user my-auto">
-                <div className="ml-2 ">Name :</div>
+              <div className="label-line-add-account my-auto">
+                <div className="ml-2 ">Password :</div>
                 <div className="color-dustred">*</div>
               </div>
               <Input placeholder="example" onChange={""} />
             </div>
             <div className="line-add-user d-flex justify-content-between my-3">
-              <div className="label-line-add-user d-flex my-auto">
-                <div>Password :</div>
+              <div className="label-line-add-account my-auto">
+                <div className="ml-2 ">Agent Name :</div>
+                <div className="color-dustred">*</div>
+              </div>
+              <Input placeholder="example" onChange={""} />
+            </div>
+            <div className="line-add-user d-flex justify-content-between my-3">
+              <div className="label-line-add-account my-auto">
+                <div className="ml-2 ">Agent Code :</div>
+                <div className="color-dustred">*</div>
+              </div>
+              <Input placeholder="example" onChange={""} />
+            </div>
+            <div className="line-add-user d-flex justify-content-between my-3">
+              <div className="label-line-add-account my-auto">
+                <div className="ml-2 ">Expired Date :</div>
+                <div className="color-dustred">*</div>
               </div>
               <Input placeholder="example" onChange={""} />
             </div>
           </Modal>
         </div>
       </div>
-      <AccountTable></AccountTable>
+      <Table
+        rowSelection={{
+          selectedRowKeys,
+          onChange: (e) => {
+            setSelectedRowKeys(e);
+          },
+        }}
+        columns={columns}
+        dataSource={account}
+      />
     </>
   );
 }

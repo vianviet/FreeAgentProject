@@ -9,6 +9,7 @@ import CalendarPage from "./Page/Main/CalendarPage";
 import SettingPage from "./Page/Main/SettingPage";
 import UserPage from "./Page/Main/UserPage";
 import "antd/dist/antd.css";
+import ProfilePage from "./Page/Main/ProfilePage";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               path="setting"
               element={<SettingPage> </SettingPage>}
             ></Route>
+            <Route path="profile" element={<ProfilePage></ProfilePage>}></Route>
           </Route>
         </Route>
       </Routes>
