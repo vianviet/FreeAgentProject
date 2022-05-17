@@ -14,6 +14,7 @@ import angledownwhite from './angledownwhite.svg'
 import copy from './copy.svg'
 import usertitle from './usertitle.svg'
 import accounttitle from './accounttitle.svg'
+import settingtitle from './settingtitle.svg'
 
 export {
     calendar,
@@ -32,4 +33,5 @@ export {
     copy,
     usertitle,
     accounttitle,
+    settingtitle,
 }

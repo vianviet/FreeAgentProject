@@ -25,9 +25,9 @@ export default function AccountPage() {
   const handleCancel = () => {
     setVisibleAdd(false);
   };
-  const onSelectChange = (selectedRowKeys) => {
-    setSelectedRowKeys({ selectedRowKeys });
-  };
+  // const onSelectChange = (selectedRowKeys) => {
+  //   setSelectedRowKeys({ selectedRowKeys });
+  // };
   const reset = () => {
     setSyncLoading(true);
     setTimeout(() => {
