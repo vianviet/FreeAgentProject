@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import au from "../../Data/authen";
+import { message } from "antd";
 
 const userData = JSON.parse(JSON.stringify(au));
 export default function Login() {
@@ -8,7 +9,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const handleClick = (e) => {
     e.preventDefault();
-    var message;
     for (var i = 0; i < userData.length; i++) {
       if (
         userData[i].username === username &&
@@ -16,14 +16,19 @@ export default function Login() {
       ) {
         localStorage.setItem("username", username);
         localStorage.setItem("au", true);
-        message = "正常にログインしました";
-        navigate("/calendar");
+        message
+          .loading("システムはログイン情報をチェックしています", 2.5)
+          .then(() => message.success("正常にログインしました", 1))
+          .then(() => navigate("/calendar"));
+
         break;
       } else {
-        message = "インに失敗しました";
+        message
+          .loading("システムはログイン情報をチェックしています", 2.5)
+          .then(() => message.error("インに失敗しました", 2.5));
+        break;
       }
     }
-    alert(message);
   };
   const navigate = useNavigate();
   return (

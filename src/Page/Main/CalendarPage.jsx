@@ -12,7 +12,11 @@ import MonthEvent from "../../component/Main/Calendar/MonthEvent";
 import { calendartitle } from "../../component/Header/svg/index";
 import SelectText from "../../component/Main/Calendar/SelectText";
 import { Button } from "antd";
-import { UploadOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  PlusCircleOutlined,
+  EyeTwoTone,
+} from "@ant-design/icons";
 import ListClient from "../../component/Main/Calendar/ListClient";
 import { Modal } from "antd";
 import { Input } from "antd";
@@ -38,6 +42,7 @@ export default function CalendarPage() {
   const [change, setChange] = useState(new Date("November, 2021"));
   const [visibleSetACall, setVisibleSetACall] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [clientVisible, setClientVisible] = useState(false);
 
   const handleNextMonth = () => {
     var news = new Date(change);
@@ -171,9 +176,69 @@ export default function CalendarPage() {
           <Button type="primary" icon={<UploadOutlined />}>
             Upload
           </Button>
+          <Modal
+            className="text-left"
+            title="Set A Call"
+            visible={visibleSetACall}
+            // onOk={handleOk}
+            confirmLoading={confirmLoading}
+            onCancel={handleCancel}
+            footer={[
+              <Button key="back" onClick={() => handleCancel()}>
+                Close
+              </Button>,
+              <Button
+                key="submit"
+                type="primary"
+                loading={confirmLoading}
+                onClick={() => handleOk()}
+              >
+                Send SMS
+              </Button>,
+            ]}
+          >
+            <Input
+              className="my-1"
+              placeholder="example"
+              prefix={<UserOutlined />}
+              value={newEvent.title}
+              onChange={(e) =>
+                setNewEvent({ ...newEvent, title: e.target.value })
+              }
+            />
+            <Input className="my-1" placeholder="Enter a phone number" />
+            <div className="pick-time my-1 d-flex justify-content-between">
+              <DatePicker
+                className="w-100"
+                selected={newEvent.start}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, start: e._d, end: e._d })
+                }
+              />
+              <TimePicker className="w-100" onChange={(e) => onChange(e)} />
+            </div>
+            <Input className="my-1" placeholder="Enter a message to client" />
+          </Modal>
+          <Button
+            onClick={() => setClientVisible(!clientVisible)}
+            className="client-button ml-1"
+            type="primary"
+            icon={<EyeTwoTone />}
+          >
+            Show Client
+          </Button>
+          <Modal
+            className="client-modal"
+            visible={clientVisible}
+            onOk={handleOk}
+            onCancel={() => setClientVisible(!clientVisible)}
+            footer={""}
+          >
+            <ListClient time={change} className="h-auto mt-4"></ListClient>
+          </Modal>
         </div>
       </div>
-      <div className="calendar-content ">
+      <div className="calendar-content">
         <Calendar
           selectable
           onNavigate={onNavigate}

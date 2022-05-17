@@ -19,9 +19,9 @@ export default function Profile() {
   return (
     <div className="profile-content ">
       <div className="content-title ">Account Setting</div>
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center form-margin-top-5">
         <div className="d-flex flex-column justify-content-center align-items-center">
-          <div className="d-flex flex-column justify-content-left width-400 ml-5 px-5 my-5">
+          <div className="form-label d-flex flex-column justify-content-left width-400 ml-5 px-5 my-5">
             <div className="input d-flex my-2">
               <div className="width-80">Name</div>
               <div className="mr-3">:</div>

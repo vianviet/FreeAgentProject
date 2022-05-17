@@ -8,6 +8,8 @@ export default function Ava() {
     navigate("/profile");
   };
   return (
-    <img onClick={(e) => handleClick()} className="mb-3" src={ava} alt="ava" />
+    <div className="d-flex align-items-center justify-content-center">
+      <img onClick={(e) => handleClick()} src={ava} alt="ava" />
+    </div>
   );
 }

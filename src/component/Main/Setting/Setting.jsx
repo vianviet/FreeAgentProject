@@ -5,9 +5,9 @@ export default function Setting() {
   return (
     <div className="profile-content ">
       <div className="content-title">Setting Video</div>
-      <div className="d-flex justify-content-center">
+      <div className="form-margin-top-5 d-flex justify-content-center">
         <div className="d-flex flex-column justify-content-center align-items-center">
-          <div className="d-flex flex-column justify-content-left width-600 my-5">
+          <div className="setting-input-form d-flex flex-column justify-content-left width-500 my-5">
             <div className="input d-flex my-2">
               <div className="label-line-add-account my-auto">
                 <div className="ml-2 ">Access token :</div>

@@ -4,11 +4,11 @@ import Delete from "../User/Delete";
 import Edit from "../Account/Edit";
 import Sync from "./Sync";
 
-const columns = [
+const columnstablet = [
   {
     title: "Email",
     dataIndex: "email",
-    width: "15%",
+    width: "12%",
   },
   {
     title: "Password",
@@ -39,17 +39,13 @@ const columns = [
     dataIndex: "expireddate",
   },
   {
-    title: "Synchronized Date",
-    dataIndex: "syncdate",
-  },
-  {
     title: "Status",
     dataIndex: "status",
   },
   {
     title: "Action",
     key: "action",
-    width: "20%",
+    width: "15%",
     render: (text, record) => (
       <Space size="middle">
         <Edit data={record}></Edit>
@@ -59,4 +55,4 @@ const columns = [
     ),
   },
 ];
-export default columns;
+export default columnstablet;

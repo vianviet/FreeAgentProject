@@ -2,12 +2,13 @@ import React from "react";
 import ClientDetail from "./ClientDetail";
 
 export default function ListClient(props) {
+  const { className } = props;
   return (
-    <div className="list-client">
+    <div className={`${className}  list-client`}>
       <div className="list-client-title">
         <div>List Client</div>
       </div>
-      <div className="list-client-body">
+      <div className={`${className}  list-client-body`}>
         <div className="list-client-content">
           <div className="list-client-current-time">
             {props.time.getFullYear() +

@@ -4,6 +4,8 @@ import { Input, Button, Modal, Table } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
 import columns from "../../component/Main/Account/columns";
 import account from "../../Data/account";
+import columnsmobile from "../../component/Main/Account/columnsmobile";
+import columnstablet from "../../component/Main/Account/columnstablet";
 
 const { Search } = Input;
 
@@ -132,6 +134,7 @@ export default function AccountPage() {
         </div>
       </div>
       <Table
+        className="account-table"
         rowSelection={{
           selectedRowKeys,
           onChange: (e) => {
@@ -139,6 +142,28 @@ export default function AccountPage() {
           },
         }}
         columns={columns}
+        dataSource={account}
+      />
+      <Table
+        className="account-table-tablet"
+        rowSelection={{
+          selectedRowKeys,
+          onChange: (e) => {
+            setSelectedRowKeys(e);
+          },
+        }}
+        columns={columnstablet}
+        dataSource={account}
+      />
+      <Table
+        className="account-table-mobile"
+        rowSelection={{
+          selectedRowKeys,
+          onChange: (e) => {
+            setSelectedRowKeys(e);
+          },
+        }}
+        columns={columnsmobile}
         dataSource={account}
       />
     </>
