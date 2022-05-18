@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import events from "../../Data/events";
+import React, { useCallback, useEffect, useState } from "react";
+// import events from "../../Data/events";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
@@ -19,9 +19,11 @@ import {
 } from "@ant-design/icons";
 import ListClient from "../../component/Main/Calendar/ListClient";
 import { Modal } from "antd";
-import { Input } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { DatePicker, TimePicker } from "antd";
+// import { Input } from "antd";
+// import { UserOutlined } from "@ant-design/icons";
+// import { DatePicker, TimePicker } from "antd";
+import axios from "axios";
+import SetACallModal from "../../component/Main/Calendar/Support/SetACallModal";
 
 const Agents = ["Agent 1", "Agent 2", "Agent 3", "Agent 4"];
 const Operator = [];
@@ -37,13 +39,23 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 export default function CalendarPage() {
-  const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
-  const [eventsState, setEventsState] = useState(events);
+  // const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
+  // const [eventsState, setEventsState] = useState(events);
+  const [eventsState, setEventsState] = useState([]);
   const [change, setChange] = useState(new Date("November, 2021"));
   const [visibleSetACall, setVisibleSetACall] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  // const [confirmLoading, setConfirmLoading] = useState(false);
   const [clientVisible, setClientVisible] = useState(false);
 
+  useEffect(() => {
+    axios
+      .get(`https://free-agent.herokuapp.com/calendar`)
+      .then((res) => {
+        const events = res.data;
+        setEventsState(events);
+      })
+      .catch((error) => console.log(error));
+  }, [eventsState]);
   const handleNextMonth = () => {
     var news = new Date(change);
     news.setMonth(news.getMonth() + 1);
@@ -56,18 +68,18 @@ export default function CalendarPage() {
   };
   const onNavigate = useCallback((change) => setChange(change), [setChange]);
   const handleOk = () => {
-    setConfirmLoading(true);
+    // setConfirmLoading(true);
     setTimeout(() => {
       setVisibleSetACall(false);
-      setConfirmLoading(false);
+      // setConfirmLoading(false);
     }, 1000);
-    setEventsState((prev) => [...prev, newEvent]);
+    // setEventsState((prev) => [...prev, newEvent]);
   };
 
-  const handleCancel = () => {
-    setVisibleSetACall(false);
-  };
-  const onChange = (e) => console.log(e._d);
+  // const handleCancel = () => {
+  //   setVisibleSetACall(false);
+  // };
+  // const onChange = (e) => console.log(e._d);
   return (
     <>
       <div className="main-title">
@@ -130,53 +142,14 @@ export default function CalendarPage() {
           >
             Set a Call
           </Button>
-          <Modal
-            className="text-left"
-            title="Set A Call"
-            visible={visibleSetACall}
-            // onOk={handleOk}
-            confirmLoading={confirmLoading}
-            onCancel={handleCancel}
-            footer={[
-              <Button key="back" onClick={() => handleCancel()}>
-                Close
-              </Button>,
-              <Button
-                key="submit"
-                type="primary"
-                loading={confirmLoading}
-                onClick={() => handleOk()}
-              >
-                Send SMS
-              </Button>,
-            ]}
-          >
-            <Input
-              className="my-1"
-              placeholder="example"
-              prefix={<UserOutlined />}
-              value={newEvent.title}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, title: e.target.value })
-              }
-            />
-            <Input className="my-1" placeholder="Enter a phone number" />
-            <div className="pick-time my-1 d-flex justify-content-between">
-              <DatePicker
-                className="w-100"
-                selected={newEvent.start}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, start: e._d, end: e._d })
-                }
-              />
-              <TimePicker className="w-100" onChange={(e) => onChange(e)} />
-            </div>
-            <Input className="my-1" placeholder="Enter a message to client" />
-          </Modal>
+          <SetACallModal
+            setVisibleSetACall={setVisibleSetACall}
+            visibleSetACall={visibleSetACall}
+          ></SetACallModal>
           <Button type="primary" icon={<UploadOutlined />}>
             Upload
           </Button>
-          <Modal
+          {/* <Modal
             className="text-left"
             title="Set A Call"
             visible={visibleSetACall}
@@ -218,7 +191,7 @@ export default function CalendarPage() {
               <TimePicker className="w-100" onChange={(e) => onChange(e)} />
             </div>
             <Input className="my-1" placeholder="Enter a message to client" />
-          </Modal>
+          </Modal> */}
           <Button
             onClick={() => setClientVisible(!clientVisible)}
             className="client-button ml-1"

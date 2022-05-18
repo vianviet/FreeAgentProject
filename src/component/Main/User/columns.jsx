@@ -1,5 +1,4 @@
-import { Table, Space } from "antd";
-import data from "../../../Data/user";
+import { Space } from "antd";
 import ResetPassword from "./ResetPassword";
 import Edit from "./Edit";
 import Delete from "./Delete";
@@ -29,5 +28,4 @@ const columns = [
     ),
   },
 ];
-
-export default () => <Table columns={columns} dataSource={data} />;
+export default columns;

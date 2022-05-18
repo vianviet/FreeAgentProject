@@ -7,7 +7,7 @@ const navbarItem = [{
     },
     {
         "name": "user",
-        "href": "/user",
+        "href": "/user/",
         "icon": [user, actuser]
     },
     {

@@ -20,10 +20,13 @@ function App() {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<HomePage />}>
-            <Route path="*" element={<Navigate to="calendar" />}></Route>
+            {/* <Route path="*" element={<Navigate to="calendar" />}></Route> */}
             <Route path="" element={<Navigate to="calendar" />}></Route>
             <Route path="calendar" element={<CalendarPage> </CalendarPage>} />
-            <Route path="user" element={<UserPage> </UserPage>}></Route>
+            <Route path="user">
+              <Route path="" element={<UserPage> </UserPage>}></Route>
+              <Route path=":page" element={<UserPage> </UserPage>} />
+            </Route>
             <Route
               path="account"
               element={<AccountPage> </AccountPage>}

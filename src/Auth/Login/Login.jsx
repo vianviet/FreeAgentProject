@@ -1,66 +1,77 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import au from "../../Data/authen";
-import { message } from "antd";
+import { message, Spin } from "antd";
+import axios from "axios";
+import { LoadingOutlined } from "@ant-design/icons";
 
-const userData = JSON.parse(JSON.stringify(au));
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handleClick = (e) => {
     e.preventDefault();
-    for (var i = 0; i < userData.length; i++) {
-      if (
-        userData[i].username === username &&
-        userData[i].password === password
-      ) {
-        localStorage.setItem("username", username);
-        localStorage.setItem("au", true);
-        message
-          .loading("システムはログイン情報をチェックしています", 2.5)
-          .then(() => message.success("正常にログインしました", 1))
-          .then(() => navigate("/calendar"));
+    const data = { username: username, password: password };
+    console.log(data);
+    setIsLoading(true);
+    axios
+      .post(`https://free-agent.herokuapp.com/user/authen`, data)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        if (res.status === 200) {
+          localStorage.setItem("username", username);
+          localStorage.setItem("au", true);
 
-        break;
-      } else {
-        message
-          .loading("システムはログイン情報をチェックしています", 2.5)
-          .then(() => message.error("インに失敗しました", 2.5));
-        break;
-      }
-    }
+          setIsLoading(false);
+          message.success("正常にログインしました", 1);
+          navigate("/calendar");
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        message.error("インに失敗しました", 2);
+      });
   };
   const navigate = useNavigate();
   return (
     <div id="login-page">
-      <div className="login d-flex flex-column justify-content-between">
-        <div></div>
-        <div className="text-uppercase header mt-3">freeagent</div>
-        <div className="main d-flex justify-content-center mb-5">
-          <form className="d-flex flex-column">
-            <input
-              className="input mt-3 mb-3 p-10"
-              type="text"
-              placeholder="ユーザID --> admin"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-              className="input mt-3 mb-3"
-              type="password"
-              placeholder="パスワード --> admin"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button
-              className="login-btn mt-3 mb-3"
-              onClick={(e) => handleClick(e)}
-            >
-              ログイン
-            </button>
-          </form>
+      {isLoading ? (
+        <Spin
+          justify="center"
+          className={isLoading ? "d-flex align-items-center" : "d-none"}
+          indicator={antIcon}
+        />
+      ) : (
+        <div className="login d-flex flex-column justify-content-between">
+          <div></div>
+          <div className="text-uppercase header mt-3">freeagent</div>
+          <div className="main d-flex justify-content-center mb-5">
+            <form className="d-flex flex-column">
+              <input
+                className="input mt-3 mb-3 p-10"
+                type="text"
+                placeholder="ユーザID --> admin"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <input
+                className="input mt-3 mb-3"
+                type="password"
+                placeholder="パスワード --> admin"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                className="login-btn mt-3 mb-3"
+                onClick={(e) => handleClick(e)}
+              >
+                ログイン
+              </button>
+            </form>
+          </div>
+          <div></div>
+          <div className="footer mb-4">©2021 Faeast</div>
         </div>
-        <div></div>
-        <div className="footer mb-4">©2021 Faeast</div>
-      </div>
+      )}
     </div>
   );
 }

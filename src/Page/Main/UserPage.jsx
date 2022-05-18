@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { usertitle } from "../../component/Header/svg";
-import UserTable from "../../component/Main/User/UserTable";
-import { Input, Button, Modal } from "antd";
+import { Input, Button, Modal, Table } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import columns from "../../component/Main/User/columns";
+import data from "../../Data/user";
 
 const { Search } = Input;
 export default function UserPage() {
+  const navigate = useNavigate();
+  const { page } = useParams();
+  console.log(page);
   const [visibleAdd, setVisibleAdd] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const onSearch = (value) => console.log(value);
@@ -18,6 +23,9 @@ export default function UserPage() {
 
   const handleCancel = () => {
     setVisibleAdd(false);
+  };
+  const onPageSelect = (e) => {
+    navigate(`/user/${e}`);
   };
   return (
     <>
@@ -91,7 +99,16 @@ export default function UserPage() {
           </Modal>
         </div>
       </div>
-      <UserTable></UserTable>
+      <Table
+        columns={columns}
+        dataSource={data}
+        pagination={{
+          onChange: (e) => onPageSelect(e),
+          defaultCurrent: page,
+          defaultPageSize: 10,
+          showSizeChanger: false,
+        }}
+      />
     </>
   );
 }
