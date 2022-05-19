@@ -44,7 +44,7 @@ const columns = [
   },
   {
     title: "Status",
-    dataIndex: "status",
+    dataIndex: "statustext",
   },
   {
     title: "Action",

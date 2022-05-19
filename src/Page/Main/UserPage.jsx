@@ -3,27 +3,29 @@ import { usertitle } from "../../component/Header/svg";
 import { Input, Button, Modal, Table } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import columns from "../../component/Main/User/columns";
-import data from "../../Data/user";
+// import data from "../../Data/user";
+import { useEffect } from "react";
+import axios from "axios";
+import AddNewUser from "../../component/Main/User/Support/AddNewUser";
 
 const { Search } = Input;
 export default function UserPage() {
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
   const { page } = useParams();
-  console.log(page);
   const [visibleAdd, setVisibleAdd] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const onSearch = (value) => console.log(value);
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisibleAdd(false);
-      setConfirmLoading(false);
-    }, 1000);
-  };
 
-  const handleCancel = () => {
-    setVisibleAdd(false);
-  };
+  const onSearch = (value) => console.log(value);
+  useEffect(() => {
+    axios
+      .get(`https://free-agent.herokuapp.com/user`)
+      .then((res) => {
+        const list = res.data;
+        setData(list);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   const onPageSelect = (e) => {
     navigate(`/user/${e}`);
   };
@@ -48,55 +50,10 @@ export default function UserPage() {
           >
             + Add New
           </Button>
-          <Modal
-            bodyStyle={{
-              padding: 10,
-              fontSize: 14,
-              lineHeight: 1.5715,
-              paddingInline: 10,
-              columnGap: 50,
-            }}
-            className="text-left"
-            title="Add New User"
+          <AddNewUser
             visible={visibleAdd}
-            // onOk={handleOk}
-            confirmLoading={confirmLoading}
-            onCancel={handleCancel}
-            footer={[
-              <Button key="back" onClick={() => handleCancel()}>
-                Close
-              </Button>,
-              <Button
-                key="submit"
-                type="primary"
-                loading={confirmLoading}
-                onClick={() => handleOk()}
-              >
-                Submit
-              </Button>,
-            ]}
-          >
-            <div className="line-add-user d-flex justify-content-between my-3">
-              <div className="label-line-add-user my-auto">
-                <div className="ml-2 ">Mail :</div>
-                <div className="color-dustred">*</div>
-              </div>
-              <Input placeholder="example" onChange={""} />
-            </div>
-            <div className="line-add-user d-flex justify-content-between my-3">
-              <div className="label-line-add-user my-auto">
-                <div className="ml-2 ">Name :</div>
-                <div className="color-dustred">*</div>
-              </div>
-              <Input placeholder="example" onChange={""} />
-            </div>
-            <div className="line-add-user d-flex justify-content-between my-3">
-              <div className="label-line-add-user d-flex my-auto">
-                <div>Password :</div>
-              </div>
-              <Input placeholder="example" onChange={""} />
-            </div>
-          </Modal>
+            setVisible={setVisibleAdd}
+          ></AddNewUser>
         </div>
       </div>
       <Table

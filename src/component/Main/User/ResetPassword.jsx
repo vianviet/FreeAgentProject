@@ -1,15 +1,14 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Modal, Button } from "antd";
 import React, { useState } from "react";
+import axios from "axios";
 
-export default function ResetPassword() {
+export default function ResetPassword({ data }) {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const handleOk = () => {
     setConfirmLoading(true);
-    setTimeout(() => {
-      setConfirmLoading(false);
-    }, 1000);
+    // axios
   };
 
   const handleCancel = () => {
@@ -53,10 +52,10 @@ export default function ResetPassword() {
         <div className="d-flex reset-password-row my-3">
           <div className="reset-password-row-left">Email </div>
           <div>:</div>
-          <div className="reset-password-row-right">emailname@faeast.com</div>
+          <div className="reset-password-row-right">{data.email}</div>
         </div>
         <div className="d-flex reset-password-row my-3">
-          <div className="reset-password-row-left">Password </div>
+          <div className="reset-password-row-left">Password</div>
           <div>:</div>
           <div className="reset-password-row-right">DJCAB-JODVOR-RIFGE8</div>
         </div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input, Button, Modal } from "antd";
 
-export default function Edit() {
+export default function Edit({ data }) {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const handleOk = () => {
@@ -52,13 +52,18 @@ export default function Edit() {
           <div className="label-line-add-user d-flex my-auto">
             <div>Name :</div>
           </div>
-          <Input placeholder="Edit Name" onChange={""} />
+          <Input
+            placeholder="Edit Name"
+            onChange={""}
+            value={data.username}
+            disabled
+          />
         </div>
         <div className="line-add-user d-flex justify-content-between my-3">
           <div className="label-line-add-user d-flex my-auto">
             <div>Email :</div>
           </div>
-          <Input placeholder="Edit email" onChange={""} />
+          <Input placeholder="Edit email" onChange={""} value={data.email} />
         </div>
       </Modal>
     </div>

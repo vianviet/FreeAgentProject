@@ -40,7 +40,7 @@ const columnstablet = [
   },
   {
     title: "Status",
-    dataIndex: "status",
+    dataIndex: "statustext",
   },
   {
     title: "Action",

@@ -247,6 +247,10 @@ body,
     height: 12px;
 }
 
+.bg-blue-30 {
+    background-color: rgba(157, 194, 255, 1);
+}
+
 
 /* CSS list client here */
 

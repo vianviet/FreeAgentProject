@@ -11,7 +11,6 @@ function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
     phone: "",
     message: "",
   });
-  console.log(newEvent);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const handleOk = () => {
     setConfirmLoading(true);

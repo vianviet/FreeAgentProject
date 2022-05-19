@@ -1,21 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { accounttitle } from "../../component/Header/svg";
 import { Input, Button, Modal, Table } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
 import columns from "../../component/Main/Account/columns";
-import account from "../../Data/account";
+// import account from "../../Data/account";
 import columnsmobile from "../../component/Main/Account/columnsmobile";
 import columnstablet from "../../component/Main/Account/columnstablet";
+import axios from "axios";
 
 const { Search } = Input;
 
 export default function AccountPage() {
+  const [data, setData] = useState([]);
   const [visibleAdd, setVisibleAdd] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const hasSelected = selectedRowKeys.length > 0;
   const [syncLoading, setSyncLoading] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get(`https://free-agent.herokuapp.com/user`)
+      .then((res) => {
+        let list = [];
+        res.data.forEach((each) => {
+          const statustext = each.status ? "online" : "offline";
+          each = { ...each, statustext };
+          list.push(each);
+        });
+        setData(list);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   const onSearch = (value) => console.log(value);
+
   const handleOk = () => {
     setConfirmLoading(true);
     setTimeout(() => {
@@ -142,7 +161,7 @@ export default function AccountPage() {
           },
         }}
         columns={columns}
-        dataSource={account}
+        dataSource={data}
       />
       <Table
         className="account-table-tablet"
@@ -153,7 +172,7 @@ export default function AccountPage() {
           },
         }}
         columns={columnstablet}
-        dataSource={account}
+        dataSource={data}
       />
       <Table
         className="account-table-mobile"
@@ -164,7 +183,7 @@ export default function AccountPage() {
           },
         }}
         columns={columnsmobile}
-        dataSource={account}
+        dataSource={data}
       />
     </>
   );

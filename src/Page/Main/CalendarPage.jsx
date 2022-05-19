@@ -24,6 +24,7 @@ import { Modal } from "antd";
 // import { DatePicker, TimePicker } from "antd";
 import axios from "axios";
 import SetACallModal from "../../component/Main/Calendar/Support/SetACallModal";
+import moment from "moment";
 
 const Agents = ["Agent 1", "Agent 2", "Agent 3", "Agent 4"];
 const Operator = [];
@@ -39,12 +40,10 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 export default function CalendarPage() {
-  // const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
-  // const [eventsState, setEventsState] = useState(events);
+  const [daySelected, setDaySelected] = useState("");
   const [eventsState, setEventsState] = useState([]);
   const [change, setChange] = useState(new Date("November, 2021"));
   const [visibleSetACall, setVisibleSetACall] = useState(false);
-  // const [confirmLoading, setConfirmLoading] = useState(false);
   const [clientVisible, setClientVisible] = useState(false);
 
   useEffect(() => {
@@ -68,18 +67,11 @@ export default function CalendarPage() {
   };
   const onNavigate = useCallback((change) => setChange(change), [setChange]);
   const handleOk = () => {
-    // setConfirmLoading(true);
     setTimeout(() => {
       setVisibleSetACall(false);
-      // setConfirmLoading(false);
     }, 1000);
-    // setEventsState((prev) => [...prev, newEvent]);
   };
 
-  // const handleCancel = () => {
-  //   setVisibleSetACall(false);
-  // };
-  // const onChange = (e) => console.log(e._d);
   return (
     <>
       <div className="main-title">
@@ -149,49 +141,7 @@ export default function CalendarPage() {
           <Button type="primary" icon={<UploadOutlined />}>
             Upload
           </Button>
-          {/* <Modal
-            className="text-left"
-            title="Set A Call"
-            visible={visibleSetACall}
-            // onOk={handleOk}
-            confirmLoading={confirmLoading}
-            onCancel={handleCancel}
-            footer={[
-              <Button key="back" onClick={() => handleCancel()}>
-                Close
-              </Button>,
-              <Button
-                key="submit"
-                type="primary"
-                loading={confirmLoading}
-                onClick={() => handleOk()}
-              >
-                Send SMS
-              </Button>,
-            ]}
-          >
-            <Input
-              className="my-1"
-              placeholder="example"
-              prefix={<UserOutlined />}
-              value={newEvent.title}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, title: e.target.value })
-              }
-            />
-            <Input className="my-1" placeholder="Enter a phone number" />
-            <div className="pick-time my-1 d-flex justify-content-between">
-              <DatePicker
-                className="w-100"
-                selected={newEvent.start}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, start: e._d, end: e._d })
-                }
-              />
-              <TimePicker className="w-100" onChange={(e) => onChange(e)} />
-            </div>
-            <Input className="my-1" placeholder="Enter a message to client" />
-          </Modal> */}
+
           <Button
             onClick={() => setClientVisible(!clientVisible)}
             className="client-button ml-1"
@@ -218,10 +168,9 @@ export default function CalendarPage() {
           localizer={localizer}
           date={change}
           events={eventsState}
-          // events={events}
           startAccessor="start"
           endAccessor="end"
-          onSelectSlot={(e) => console.log(e)}
+          onSelectSlot={(e) => setDaySelected(e.start)}
           components={{
             toolbar: CalendarToolbar,
             month: {
@@ -229,7 +178,14 @@ export default function CalendarPage() {
               event: MonthEvent,
             },
           }}
-          eventPropGetter={(event) => {
+          // dayPropGetter={(date) => {
+          //   let newStyle = {};
+          //   return {
+          //     className: daySelected === date ? "bg-blue-30" : "",
+          //     style: newStyle,
+          //   };
+          // }}
+          eventPropGetter={(event, isSelected) => {
             let newStyle = {
               backgroundColor: "white",
               color: "black",

@@ -5,8 +5,8 @@ import Delete from "./Delete";
 const columns = [
   {
     title: "Name",
-    dataIndex: "name",
-    key: "name",
+    dataIndex: "username",
+    key: "username",
     width: "40%",
   },
   {
@@ -21,9 +21,9 @@ const columns = [
     width: "20%",
     render: (text, record) => (
       <Space size="middle">
-        <ResetPassword></ResetPassword>
-        <Edit></Edit>
-        <Delete></Delete>
+        <ResetPassword data={record}></ResetPassword>
+        <Edit data={record}></Edit>
+        <Delete data={record}></Delete>
       </Space>
     ),
   },
