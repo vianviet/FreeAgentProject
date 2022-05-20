@@ -1,16 +1,37 @@
 import React, { useState } from "react";
-import { Input, Button, Modal } from "antd";
+import { Input, Button, Modal, message, DatePicker } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import axios from "axios";
+import validation from "../../../utils/validation/validation";
 
 export default function Edit(props) {
+  const [data, setData] = useState({
+    password: props.data.password,
+    agentname: props.data.agentname,
+    agentcode: props.data.agentcode,
+    expireddate: props.data.expireddate,
+  });
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 1000);
+    const validate = validation(data, "accountedit");
+    if (validate.length === 0) {
+      setConfirmLoading(true);
+      axios
+        .put(`https://free-agent.herokuapp.com/user/${props.data._id}`, data)
+        .then((res) => {
+          setConfirmLoading(false);
+          message.success("Update account success", 1);
+          setVisible(false);
+        })
+        .catch((err) => {
+          setConfirmLoading(false);
+          console.log(err);
+          message.error("Fail to update account", 1);
+        });
+    } else {
+      validate.map((each) => message.error(each));
+    }
   };
 
   const handleCancel = () => {
@@ -54,7 +75,12 @@ export default function Edit(props) {
             <div className="ml-2 ">Email :</div>
             <div className="color-dustred">*</div>
           </div>
-          <Input value={props.data.email} placeholder="example" onChange={""} />
+          <Input
+            defaultValue={props.data.email}
+            placeholder="example"
+            onChange={""}
+            disabled
+          />
         </div>
         <div className="line-add-user d-flex justify-content-between my-3">
           <div className="label-line-add-account my-auto">
@@ -62,7 +88,8 @@ export default function Edit(props) {
             <div className="color-dustred">*</div>
           </div>
           <Input.Password
-            value={props.data.password}
+            onChange={(e) => setData({ ...data, password: e.target.value })}
+            defaultValue="DJCAB-JODVOR-RIFGE8"
             iconRender={(visible) =>
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
@@ -74,9 +101,9 @@ export default function Edit(props) {
             <div className="color-dustred">*</div>
           </div>
           <Input
-            value={props.data.agentname}
+            onChange={(e) => setData({ ...data, agentname: e.target.value })}
+            defaultValue={props.data.agentname}
             placeholder="example"
-            onChange={""}
           />
         </div>
         <div className="line-add-user d-flex justify-content-between my-3">
@@ -85,9 +112,9 @@ export default function Edit(props) {
             <div className="color-dustred">*</div>
           </div>
           <Input
-            value={props.data.agentcode}
+            defaultValue={props.data.agentcode}
             placeholder="example"
-            onChange={""}
+            onChange={(e) => setData({ ...data, agentcode: e.target.value })}
           />
         </div>
         <div className="line-add-user d-flex justify-content-between my-3">
@@ -95,10 +122,9 @@ export default function Edit(props) {
             <div className="ml-2 ">Expired Date :</div>
             <div className="color-dustred">*</div>
           </div>
-          <Input
-            value={props.data.expireddate}
-            placeholder="example"
-            onChange={""}
+          <DatePicker
+            className="w-100"
+            onChange={(e) => setData({ ...data, expireddate: e._d })}
           />
         </div>
       </Modal>

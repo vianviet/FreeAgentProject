@@ -1,16 +1,61 @@
-import { Button, Modal, Input } from "antd";
+import { Button, Modal, Input, message } from "antd";
 import React, { useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import axios from "axios";
+import validation from "../../../utils/validation/validation";
+import md5 from "md5";
 
 export default function Profile() {
+  const [data, setData] = useState({
+    oldpassword: "",
+    newpassword: "",
+    confirmpassword: "",
+  });
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 1000);
+    const validate = validation(data, "changepassword");
+    if (validate.length === 0) {
+      setConfirmLoading(true);
+      axios
+        .get(
+          `https://free-agent.herokuapp.com/user/${localStorage.getItem("id")}`
+        )
+        .then((res) => {
+          const user = res.data;
+          if (user.password === md5(data.oldpassword)) {
+            axios
+              .put(
+                `https://free-agent.herokuapp.com/user/${localStorage.getItem(
+                  "id"
+                )}`,
+                {
+                  password: data.newpassword,
+                }
+              )
+              .then((res) => {
+                setConfirmLoading(false);
+                setVisible(false);
+                message.success("Update Password success", 1);
+              })
+              .catch((err) => {
+                setConfirmLoading(false);
+                message.error("Fail to update password", 2);
+              });
+          } else {
+            setConfirmLoading(false);
+            message.error("Old password is incorrect");
+          }
+        })
+        .catch((error) => message.error(error));
+    } else {
+      validate.map((each) => message.error(each));
+    }
+
+    // setTimeout(() => {
+    //   setVisible(false);
+    //   setConfirmLoading(false);
+    // }, 1000);
   };
 
   const handleCancel = () => {
@@ -74,7 +119,9 @@ export default function Profile() {
                 <div className="color-dustred">*</div>
               </div>
               <Input.Password
-                value="example"
+                onChange={(e) =>
+                  setData({ ...data, oldpassword: e.target.value })
+                }
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 }
@@ -86,7 +133,9 @@ export default function Profile() {
                 <div className="color-dustred">*</div>
               </div>
               <Input.Password
-                value="example"
+                onChange={(e) =>
+                  setData({ ...data, newpassword: e.target.value })
+                }
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 }
@@ -98,7 +147,9 @@ export default function Profile() {
                 <div className="color-dustred">*</div>
               </div>
               <Input.Password
-                value="example"
+                onChange={(e) =>
+                  setData({ ...data, confirmpassword: e.target.value })
+                }
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 }

@@ -1,20 +1,34 @@
 import React, { useState } from "react";
-import { Input, Button, Modal } from "antd";
+import { Input, Button, Modal, message } from "antd";
+import axios from "axios";
 
 export default function Edit({ data }) {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
   const handleOk = () => {
     setConfirmLoading(true);
-    setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 1000);
+
+    axios
+      .post(`https://free-agent.herokuapp.com/user/`, {
+        username: data.username,
+        email: emailInput,
+      })
+      .then((res) => {
+        setConfirmLoading(false);
+        message.success("Update email success", 1);
+        setVisible(false);
+      })
+      .catch((err) => {
+        setConfirmLoading(false);
+        message.error("email existing, please try another email", 1);
+      });
   };
 
   const handleCancel = () => {
     setVisible(false);
   };
+
   return (
     <div>
       <div className="table-button" onClick={() => setVisible(true)}>
@@ -42,7 +56,7 @@ export default function Edit({ data }) {
             key="submit"
             type="primary"
             loading={confirmLoading}
-            onClick={() => handleOk()}
+            // onClick={() => handleOk()}
           >
             Save
           </Button>,
@@ -63,7 +77,12 @@ export default function Edit({ data }) {
           <div className="label-line-add-user d-flex my-auto">
             <div>Email :</div>
           </div>
-          <Input placeholder="Edit email" onChange={""} value={data.email} />
+          <Input
+            placeholder="Edit email"
+            onChange={(e) => setEmailInput(e.target.value)}
+            defaultValue={data.email}
+            disabled
+          />
         </div>
       </Modal>
     </div>

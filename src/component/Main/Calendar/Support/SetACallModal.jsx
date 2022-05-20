@@ -2,6 +2,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Input, message, Modal, TimePicker } from "antd";
 import React, { memo, useState } from "react";
 import axios from "axios";
+import validation from "../../../../utils/validation/validation";
 
 function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
   const [newEvent, setNewEvent] = useState({
@@ -13,22 +14,29 @@ function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
   });
   const [confirmLoading, setConfirmLoading] = useState(false);
   const handleOk = () => {
-    setConfirmLoading(true);
     const data = newEvent;
-    axios
-      .post(`https://free-agent.herokuapp.com/calendar`, data)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        if (res.status === 200) {
+    console.log(data.start.toString().length);
+    const validate = validation(newEvent, "calendar");
+    if (validate.length === 0) {
+      setConfirmLoading(true);
+      axios
+        .post(`https://free-agent.herokuapp.com/calendar`, data)
+        .then((res) => {
+          console.log(res);
+          console.log(res.data);
+          if (res.status === 200) {
+            setConfirmLoading(false);
+            message.success("Add a new call success", 1);
+          }
+        })
+        .catch((err) => {
           setConfirmLoading(false);
-          message.success("Add a new call success", 1);
-        }
-      })
-      .catch((err) => {
-        setConfirmLoading(false);
-        message.error("Fail to add a new call", 1);
-      });
+          message.error("Fail to add a new call", 1);
+        });
+    } else {
+      validate.map((each) => message.error(each));
+    }
+
     // setTimeout(() => {
     //   setVisibleSetACall(false);
     //   setConfirmLoading(false);
@@ -77,7 +85,11 @@ function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
         <DatePicker
           className="w-100"
           selected={newEvent.start}
-          onChange={(e) => setNewEvent({ ...newEvent, start: e._d, end: e._d })}
+          onChange={(e) => {
+            try {
+              setNewEvent({ ...newEvent, start: e._d, end: e._d });
+            } catch {}
+          }}
         />
         <TimePicker className="w-100" onChange={(e) => onChange(e)} />
       </div>

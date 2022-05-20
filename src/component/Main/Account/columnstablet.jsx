@@ -49,8 +49,8 @@ const columnstablet = [
     render: (text, record) => (
       <Space size="middle">
         <Edit data={record}></Edit>
-        <Sync></Sync>
-        <Delete></Delete>
+        <Sync data={record}></Sync>
+        <Delete data={record}></Delete>
       </Space>
     ),
   },

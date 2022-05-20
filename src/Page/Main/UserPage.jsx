@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { usertitle } from "../../component/Header/svg";
-import { Input, Button, Modal, Table } from "antd";
+import { Input, Button, Table } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import columns from "../../component/Main/User/columns";
 // import data from "../../Data/user";
@@ -24,7 +24,7 @@ export default function UserPage() {
         setData(list);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [data]);
 
   const onPageSelect = (e) => {
     navigate(`/user/${e}`);
