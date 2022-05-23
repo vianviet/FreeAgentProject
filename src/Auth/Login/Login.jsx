@@ -22,9 +22,10 @@ export default function Login() {
           console.log(res);
           console.log(res.data);
           if (res.status === 200) {
-            localStorage.setItem("username", username);
-            localStorage.setItem("au", true);
+            localStorage.setItem("username", res.data.username);
+            localStorage.setItem("email", res.data.email);
             localStorage.setItem("id", res.data._id);
+            localStorage.setItem("au", true);
             setIsLoading(false);
             message.success("正常にログインしました", 1);
             navigate("/calendar");

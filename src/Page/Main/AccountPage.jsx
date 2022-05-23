@@ -23,9 +23,10 @@ export default function AccountPage() {
       .get(`https://free-agent.herokuapp.com/user`)
       .then((res) => {
         let list = [];
-        res.data.forEach((each) => {
+        res.data.forEach((each, index) => {
           const statustext = each.status ? "online" : "offline";
-          each = { ...each, statustext };
+          const key = index;
+          each = { ...each, statustext, key };
           list.push(each);
         });
         setData(list);

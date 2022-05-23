@@ -11,7 +11,7 @@ export default function Delete({ data }) {
     const { _id } = data;
     console.log(_id);
     axios
-      .delete(`http://localhost:3001/user/${data._id}`)
+      .delete(`https://free-agent.herokuapp.com/user/${data._id}`)
       .then((res) => {
         console.log(res.data);
         setVisible(false);

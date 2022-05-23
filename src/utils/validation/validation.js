@@ -90,10 +90,6 @@ export default function validation(data, type) {
         }
         if (expireddate.toString() <= 0) {
             error.push("expireddate date must not empty")
-        } else {
-            if (expireddate instanceof Date) {
-                error.push("call date must be date, please select in the left")
-            }
         }
 
     }

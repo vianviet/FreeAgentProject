@@ -20,7 +20,12 @@ export default function UserPage() {
     axios
       .get(`https://free-agent.herokuapp.com/user`)
       .then((res) => {
-        const list = res.data;
+        const list = [];
+        res.data.map((each, index) => {
+          const key = index;
+          each = { ...each, key };
+          list.push(each);
+        });
         setData(list);
       })
       .catch((error) => console.log(error));

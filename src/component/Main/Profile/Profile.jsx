@@ -70,12 +70,12 @@ export default function Profile() {
             <div className="input d-flex my-2">
               <div className="width-80">Name</div>
               <div className="mr-3">:</div>
-              <div>UserName</div>
+              <div>{localStorage.getItem("username")}</div>
             </div>
             <div className="input d-flex my-2">
               <div className="width-80">Email</div>
               <div className="mr-3">:</div>
-              <div>emailname@faeast.com</div>
+              <div>{localStorage.getItem("email")}</div>
             </div>
           </div>
           <Button
