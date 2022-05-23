@@ -4,6 +4,7 @@ import { message, Spin } from "antd";
 import axios from "axios";
 import { LoadingOutlined } from "@ant-design/icons";
 import validation from "../../utils/validation/validation";
+import axiosCustom from "../../Axios/AxiosCustom";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 export default function Login() {
@@ -16,16 +17,16 @@ export default function Login() {
     const validate = validation(data, "login");
     if (validate.length === 0) {
       setIsLoading(true);
-      axios
-        .post(`https://free-agent.herokuapp.com/user/authen`, data)
+      // axios
+      //   .post(`https://free-agent.herokuapp.com/user/authen`, data)
+      axiosCustom
+        .post("user/authen", data)
         .then((res) => {
           console.log(res);
           console.log(res.data);
           if (res.status === 200) {
-            localStorage.setItem("username", res.data.username);
-            localStorage.setItem("email", res.data.email);
-            localStorage.setItem("id", res.data._id);
-            localStorage.setItem("au", true);
+            localStorage.setItem("username", username);
+            localStorage.setItem("token", res.data.token);
             setIsLoading(false);
             message.success("正常にログインしました", 1);
             navigate("/calendar");
@@ -33,6 +34,7 @@ export default function Login() {
         })
         .catch((err) => {
           setIsLoading(false);
+          console.log(err);
           message.error("インに失敗しました", 2);
         });
     } else {

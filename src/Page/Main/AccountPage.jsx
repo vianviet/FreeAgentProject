@@ -7,6 +7,7 @@ import columnsmobile from "../../component/Main/Account/columnsmobile";
 import columnstablet from "../../component/Main/Account/columnstablet";
 import axios from "axios";
 import AddAccount from "../../component/Main/Account/Support/AddAccount";
+import axiosCustom from "../../Axios/AxiosCustom";
 
 const { Search } = Input;
 
@@ -19,8 +20,10 @@ export default function AccountPage() {
   const [syncLoading, setSyncLoading] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`https://free-agent.herokuapp.com/user`)
+    // axios
+    //   .get(`https://free-agent.herokuapp.com/user`)
+    axiosCustom
+      .get("user")
       .then((res) => {
         let list = [];
         res.data.forEach((each, index) => {
@@ -32,7 +35,7 @@ export default function AccountPage() {
         setData(list);
       })
       .catch((error) => console.log(error));
-  }, [data]);
+  }, []);
 
   const onSearch = (value) => console.log(value);
 

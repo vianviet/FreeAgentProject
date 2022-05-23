@@ -7,18 +7,23 @@ import columns from "../../component/Main/User/columns";
 import { useEffect } from "react";
 import axios from "axios";
 import AddNewUser from "../../component/Main/User/Support/AddNewUser";
+import axiosCustom from "../../Axios/AxiosCustom";
 
 const { Search } = Input;
 export default function UserPage() {
   const [data, setData] = useState([]);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const navigate = useNavigate();
   const { page } = useParams();
   const [visibleAdd, setVisibleAdd] = useState(false);
 
   const onSearch = (value) => console.log(value);
   useEffect(() => {
-    axios
-      .get(`https://free-agent.herokuapp.com/user`)
+    setConfirmLoading(true);
+    // axios
+    //   .get(`https://free-agent.herokuapp.com/user`)
+    axiosCustom
+      .get("user")
       .then((res) => {
         const list = [];
         res.data.map((each, index) => {
@@ -27,9 +32,10 @@ export default function UserPage() {
           list.push(each);
         });
         setData(list);
+        setConfirmLoading(false);
       })
-      .catch((error) => console.log(error));
-  }, [data]);
+      .catch((error) => setConfirmLoading(false));
+  }, []);
 
   const onPageSelect = (e) => {
     navigate(`/user/${e}`);
@@ -62,6 +68,7 @@ export default function UserPage() {
         </div>
       </div>
       <Table
+        loading={confirmLoading}
         columns={columns}
         dataSource={data}
         pagination={{
