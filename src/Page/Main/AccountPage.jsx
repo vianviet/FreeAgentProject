@@ -8,36 +8,50 @@ import columnstablet from "../../component/Main/Account/columnstablet";
 import axios from "axios";
 import AddAccount from "../../component/Main/Account/Support/AddAccount";
 import axiosCustom from "../../Axios/AxiosCustom";
+import { useQuery } from "react-query";
 
 const { Search } = Input;
 
 export default function AccountPage() {
-  const [data, setData] = useState([]);
+  const [account, setAccount] = useState([]);
   const [visibleAdd, setVisibleAdd] = useState(false);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const hasSelected = selectedRowKeys.length > 0;
   const [syncLoading, setSyncLoading] = useState(false);
 
-  useEffect(() => {
-    // axios
-    //   .get(`https://free-agent.herokuapp.com/user`)
-    axiosCustom
-      .get("user")
-      .then((res) => {
-        let list = [];
-        res.data.forEach((each, index) => {
-          const statustext = each.status ? "online" : "offline";
-          const key = index;
-          each = { ...each, statustext, key };
-          list.push(each);
-        });
-        setData(list);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  const getData = async () => {
+    return axiosCustom.get("user");
+  };
+  const { data, isFetching } = useQuery("get-users", getData, {
+    initialData: [],
+  });
 
-  const onSearch = (value) => console.log(value);
+  useEffect(() => {
+    if (data.data) {
+      const list = data.data;
+      console.log("list", list);
+      const keylist = [];
+      list.forEach((each, index) => {
+        const key = index;
+        each = { ...each, key };
+        keylist.push(each);
+      });
+      setAccount(keylist);
+    }
+  }, [data]);
+  const onSearch = (e) => {
+    const currValue = e.target.value;
+    console.log(currValue);
+    if (data.data) {
+      const filteredData = data.data.filter((entry, index) => {
+        // entry = { ...entry, key: index };
+        // entry.expireddate = new Date(entry.expireddate).toLocaleDateString();
+        return entry.username.includes(currValue);
+      });
+      setAccount(filteredData);
+    }
+  };
 
   // const onSelectChange = (selectedRowKeys) => {
   //   setSelectedRowKeys({ selectedRowKeys });
@@ -60,7 +74,7 @@ export default function AccountPage() {
         <div className="left-toolbar ">
           <Search
             placeholder="input search text"
-            onSearch={onSearch}
+            onChange={(e) => onSearch(e)}
             style={{ width: 264 }}
           />
           <Button
@@ -87,6 +101,7 @@ export default function AccountPage() {
         </div>
       </div>
       <Table
+        loading={isFetching}
         className="account-table"
         rowSelection={{
           selectedRowKeys,
@@ -95,9 +110,10 @@ export default function AccountPage() {
           },
         }}
         columns={columns}
-        dataSource={data}
+        dataSource={account}
       />
       <Table
+        loading={isFetching}
         className="account-table-tablet"
         rowSelection={{
           selectedRowKeys,
@@ -106,9 +122,10 @@ export default function AccountPage() {
           },
         }}
         columns={columnstablet}
-        dataSource={data}
+        dataSource={account}
       />
       <Table
+        loading={isFetching}
         className="account-table-mobile"
         rowSelection={{
           selectedRowKeys,
@@ -117,7 +134,7 @@ export default function AccountPage() {
           },
         }}
         columns={columnsmobile}
-        dataSource={data}
+        dataSource={account}
       />
     </>
   );

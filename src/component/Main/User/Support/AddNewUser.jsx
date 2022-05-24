@@ -2,16 +2,19 @@ import { Button, Input, message, Modal } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import validation from "../../../../utils/validation/validation";
+import { useMutation, useQueryClient } from "react-query";
+import axiosCustom from "../../../../Axios/AxiosCustom";
 
 export default function AddNewUser({ visible, setVisible }) {
   const [data, setData] = useState({ username: "", email: "", password: "" });
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const handleAddUser = () => {
+
+  const AddUser = (data) => {
     const validate = validation(data, "useradd");
     if (validate.length === 0) {
       setConfirmLoading(true);
-      axios
-        .post(`https://free-agent.herokuapp.com/user/`, data)
+      return axiosCustom
+        .post(`user/`, data)
         .then((res) => {
           setConfirmLoading(false);
           message.success("Add a new user success", 1);
@@ -29,6 +32,17 @@ export default function AddNewUser({ visible, setVisible }) {
     } else {
       validate.map((each) => message.error(each));
     }
+  };
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(AddUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("get-users");
+    },
+  });
+
+  const handleAddUser = () => {
+    mutation.mutate(data);
   };
 
   const handleCancel = () => {

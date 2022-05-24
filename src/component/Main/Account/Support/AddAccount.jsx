@@ -2,6 +2,7 @@ import { Button, DatePicker, Input, message, Modal } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import validation from "../../../../utils/validation/validation";
+import { useMutation, useQueryClient } from "react-query";
 
 export default function AddAccount(props) {
   const { visibleAdd, setVisibleAdd } = props;
@@ -14,7 +15,8 @@ export default function AddAccount(props) {
     expireddate: "",
   });
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const handleOk = () => {
+
+  const AddAccount = (data) => {
     const validate = validation(data, "accountadd");
     if (validate.length === 0) {
       setConfirmLoading(true);
@@ -31,10 +33,17 @@ export default function AddAccount(props) {
     } else {
       validate.map((each) => message.error(each));
     }
-    // setTimeout(() => {
-    //   setVisibleAdd(false);
-    //   setConfirmLoading(false);
-    // }, 1000);
+  };
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(AddAccount, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("get-users");
+    },
+  });
+
+  const handleOk = () => {
+    mutation.mutate(data);
   };
 
   const handleCancel = () => {

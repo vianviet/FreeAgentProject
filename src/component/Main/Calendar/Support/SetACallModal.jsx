@@ -3,6 +3,7 @@ import { Button, DatePicker, Input, message, Modal, TimePicker } from "antd";
 import React, { memo, useState } from "react";
 import axios from "axios";
 import validation from "../../../../utils/validation/validation";
+import { useMutation, useQueryClient } from "react-query";
 
 function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
   const [newEvent, setNewEvent] = useState({
@@ -13,13 +14,12 @@ function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
     message: "",
   });
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const handleOk = () => {
-    const data = newEvent;
-    console.log(data.start.toString().length);
+
+  const setACall = (data) => {
     const validate = validation(newEvent, "calendar");
     if (validate.length === 0) {
       setConfirmLoading(true);
-      axios
+      return axios
         .post(`https://free-agent.herokuapp.com/calendar`, data)
         .then((res) => {
           console.log(res);
@@ -36,6 +36,18 @@ function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
     } else {
       validate.map((each) => message.error(each));
     }
+  };
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(setACall, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("get-event");
+    },
+  });
+
+  const handleOk = () => {
+    const data = newEvent;
+    mutation.mutate(data);
 
     // setTimeout(() => {
     //   setVisibleSetACall(false);

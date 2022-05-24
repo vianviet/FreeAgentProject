@@ -2,6 +2,7 @@ import { CheckCircleOutlined } from "@ant-design/icons";
 import { Modal, Button, message } from "antd";
 import React, { useState } from "react";
 import axios from "axios";
+import axiosCustom from "../../../Axios/AxiosCustom";
 
 export default function ResetPassword({ data }) {
   const [visible, setVisible] = useState(false);
@@ -18,11 +19,9 @@ export default function ResetPassword({ data }) {
   };
   const handleSubmit = () => {
     setConfirmLoading(true);
-    axios
-      .put("https://free-agent.herokuapp.com/user", {
-        username: data.username,
-        password: "DJCAB-JODVOR-RIFGE8",
-      })
+    const { password, _id } = data;
+    axiosCustom
+      .put(`/user/${_id}`, { password: "DJCAB-JODVOR-RIFGE8" })
       .then((res) => {
         setVisibleConfirm(true);
         setConfirmLoading(false);

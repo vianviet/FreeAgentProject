@@ -1,30 +1,38 @@
 import { message, Modal } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
+import axiosCustom from "../../../Axios/AxiosCustom";
+import { useMutation, useQueryClient } from "react-query";
 
 export default function Delete({ data }) {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const handleOk = () => {
+  const deleteUser = async (_id) => {
     setConfirmLoading(true);
-    const { _id } = data;
-    console.log(_id);
-    axios
-      .delete(`https://free-agent.herokuapp.com/user/${data._id}`)
+    return axiosCustom
+      .delete(`/user/${data._id}`)
       .then((res) => {
+        setConfirmLoading(false);
         console.log(res.data);
         setVisible(false);
         message.success("Success to delete user !", 1);
       })
       .catch((err) => {
+        setConfirmLoading(false);
         message.error("Fail to delete user !", 1);
         setVisible(false);
       });
-    setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 2000);
+  };
+  const queryClient = useQueryClient();
+  const mutation = useMutation(deleteUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("get-users");
+    },
+  });
+
+  const handleOk = () => {
+    mutation.mutate(data._id);
   };
 
   const handleCancel = () => {

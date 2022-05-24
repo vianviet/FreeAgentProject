@@ -25,6 +25,8 @@ import { Modal } from "antd";
 import axios from "axios";
 import SetACallModal from "../../component/Main/Calendar/Support/SetACallModal";
 import moment from "moment";
+import { useQuery } from "react-query";
+import axiosCustom from "../../Axios/AxiosCustom";
 
 const Agents = ["Agent 1", "Agent 2", "Agent 3", "Agent 4"];
 const Operator = [];
@@ -39,22 +41,28 @@ const localizer = dateFnsLocalizer({
   getDay,
   locales,
 });
+
 export default function CalendarPage() {
   const [daySelected, setDaySelected] = useState("");
+
   const [eventsState, setEventsState] = useState([]);
   const [change, setChange] = useState(new Date("November, 2021"));
   const [visibleSetACall, setVisibleSetACall] = useState(false);
   const [clientVisible, setClientVisible] = useState(false);
 
+  const getData = async () => {
+    return await axiosCustom.get(`https://free-agent.herokuapp.com/calendar`);
+  };
+
+  const { data } = useQuery("get-event", getData, {
+    initialData: [],
+  });
+
   useEffect(() => {
-    axios
-      .get(`https://free-agent.herokuapp.com/calendar`)
-      .then((res) => {
-        const events = res.data;
-        setEventsState(events);
-      })
-      .catch((error) => console.log(error));
-  }, [eventsState]);
+    console.log("data", data.data);
+    setEventsState(data.data);
+  }, [data]);
+
   const handleNextMonth = () => {
     var news = new Date(change);
     news.setMonth(news.getMonth() + 1);

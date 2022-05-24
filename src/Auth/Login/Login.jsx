@@ -17,8 +17,7 @@ export default function Login() {
     const validate = validation(data, "login");
     if (validate.length === 0) {
       setIsLoading(true);
-      // axios
-      //   .post(`https://free-agent.herokuapp.com/user/authen`, data)
+      // axios.post(`https://free-agent.herokuapp.com/user/authen`, data)
       axiosCustom
         .post("user/authen", data)
         .then((res) => {

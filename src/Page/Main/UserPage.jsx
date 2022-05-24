@@ -5,37 +5,48 @@ import { useNavigate, useParams } from "react-router-dom";
 import columns from "../../component/Main/User/columns";
 // import data from "../../Data/user";
 import { useEffect } from "react";
+import { useQuery } from "react-query";
 import axios from "axios";
 import AddNewUser from "../../component/Main/User/Support/AddNewUser";
 import axiosCustom from "../../Axios/AxiosCustom";
 
 const { Search } = Input;
 export default function UserPage() {
-  const [data, setData] = useState([]);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [user, setUser] = useState([]);
   const navigate = useNavigate();
   const { page } = useParams();
   const [visibleAdd, setVisibleAdd] = useState(false);
 
-  const onSearch = (value) => console.log(value);
+  const getData = async () => {
+    return axiosCustom.get("user");
+  };
+  const { data, isFetching } = useQuery("get-users", getData, {
+    initialData: [],
+  });
   useEffect(() => {
-    setConfirmLoading(true);
-    // axios
-    //   .get(`https://free-agent.herokuapp.com/user`)
-    axiosCustom
-      .get("user")
-      .then((res) => {
-        const list = [];
-        res.data.map((each, index) => {
-          const key = index;
-          each = { ...each, key };
-          list.push(each);
-        });
-        setData(list);
-        setConfirmLoading(false);
-      })
-      .catch((error) => setConfirmLoading(false));
-  }, []);
+    if (data.data) {
+      const list = data.data;
+      console.log("list", list);
+      const keylist = [];
+      list.forEach((each, index) => {
+        const key = index;
+        each = { ...each, key };
+        keylist.push(each);
+      });
+      setUser(keylist);
+    }
+  }, [data]);
+
+  const onSearch = (e) => {
+    const currValue = e.target.value;
+    console.log(currValue);
+    if (data.data) {
+      const filteredData = data.data.filter((entry) =>
+        entry.username.includes(currValue)
+      );
+      setUser(filteredData);
+    }
+  };
 
   const onPageSelect = (e) => {
     navigate(`/user/${e}`);
@@ -51,7 +62,7 @@ export default function UserPage() {
         <div className="left-toolbar">
           <Search
             placeholder="input search text"
-            onSearch={onSearch}
+            onChange={(e) => onSearch(e)}
             style={{ width: 264 }}
           />
           <Button
@@ -68,9 +79,9 @@ export default function UserPage() {
         </div>
       </div>
       <Table
-        loading={confirmLoading}
+        loading={isFetching}
         columns={columns}
-        dataSource={data}
+        dataSource={user}
         pagination={{
           onChange: (e) => onPageSelect(e),
           defaultCurrent: page,

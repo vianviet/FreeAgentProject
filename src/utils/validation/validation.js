@@ -12,7 +12,10 @@ export default function validation(data, type) {
     }
     if (type === "calendar") {
         const { title, phone, message, start } = data;
-        if (title.length <= 0) {
+        if (title.length > 6) {
+            error.push("title not bigger than 6 charecter")
+        }
+        if (title.length < 1) {
             error.push("title must not empty")
         }
         if (Number(phone) === "NaN") {
