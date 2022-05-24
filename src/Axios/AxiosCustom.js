@@ -3,7 +3,7 @@ import isExpired from '../Auth/Support/isExpired';
 
 const generateToken = async(token) => {
     try {
-        const res = await axios.post("http://localhost:3001/refreshToken", { token: token })
+        const res = await axios.post("https://free-agent.herokuapp.com/refreshToken", { token: token })
         return res.data
 
 
@@ -16,8 +16,8 @@ const generateToken = async(token) => {
 }
 
 const axiosCustom = axios.create({
-    baseURL: 'http://localhost:3001',
-    // baseURL: 'https://free-agent.herokuapp.com/',
+    // baseURL: 'http://localhost:3001',
+    baseURL: 'https://free-agent.herokuapp.com/',
     headers: {
         'Content-Type': 'application/json',
     },
