@@ -35,6 +35,8 @@ export default function AccountPage() {
       list.forEach((each, index) => {
         const key = index;
         each = { ...each, key };
+        each.expireddate = new Date(each.expireddate).toLocaleDateString();
+        each.syncdate = new Date(each.syncdate).toLocaleDateString();
         keylist.push(each);
       });
       setAccount(keylist);

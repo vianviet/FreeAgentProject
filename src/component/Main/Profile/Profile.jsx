@@ -1,9 +1,9 @@
 import { Button, Modal, Input, message } from "antd";
 import React, { useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import axios from "axios";
 import validation from "../../../utils/validation/validation";
 import md5 from "md5";
+import axiosCustom from "../../../Axios/AxiosCustom";
 
 export default function Profile() {
   const [data, setData] = useState({
@@ -17,22 +17,15 @@ export default function Profile() {
     const validate = validation(data, "changepassword");
     if (validate.length === 0) {
       setConfirmLoading(true);
-      axios
-        .get(
-          `https://free-agent.herokuapp.com/user/${localStorage.getItem("id")}`
-        )
+      axiosCustom
+        .get(`user/${localStorage.getItem("id")}`)
         .then((res) => {
           const user = res.data;
           if (user.password === md5(data.oldpassword)) {
-            axios
-              .put(
-                `https://free-agent.herokuapp.com/user/${localStorage.getItem(
-                  "id"
-                )}`,
-                {
-                  password: data.newpassword,
-                }
-              )
+            axiosCustom
+              .put(`user/${localStorage.getItem("id")}`, {
+                password: data.newpassword,
+              })
               .then((res) => {
                 setConfirmLoading(false);
                 setVisible(false);
@@ -51,11 +44,6 @@ export default function Profile() {
     } else {
       validate.map((each) => message.error(each));
     }
-
-    // setTimeout(() => {
-    //   setVisible(false);
-    //   setConfirmLoading(false);
-    // }, 1000);
   };
 
   const handleCancel = () => {

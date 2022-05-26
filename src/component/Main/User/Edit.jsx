@@ -8,7 +8,6 @@ export default function Edit({ data }) {
   const [emailInput, setEmailInput] = useState("");
   const handleOk = () => {
     setConfirmLoading(true);
-
     axios
       .post(`https://free-agent.herokuapp.com/user/`, {
         username: data.username,

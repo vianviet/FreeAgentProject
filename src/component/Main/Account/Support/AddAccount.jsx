@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import validation from "../../../../utils/validation/validation";
 import { useMutation, useQueryClient } from "react-query";
+import axiosCustom from "../../../../Axios/AxiosCustom";
 
 export default function AddAccount(props) {
   const { visibleAdd, setVisibleAdd } = props;
@@ -16,12 +17,12 @@ export default function AddAccount(props) {
   });
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const AddAccount = (data) => {
+  const AddAccount = async (data) => {
     const validate = validation(data, "accountadd");
     if (validate.length === 0) {
       setConfirmLoading(true);
-      axios
-        .post(`https://free-agent.herokuapp.com/user`, data)
+      return axiosCustom
+        .post(`/user`, data)
         .then((res) => {
           setConfirmLoading(false);
           message.success("Add a new user success", 1);

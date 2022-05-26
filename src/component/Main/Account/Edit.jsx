@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Input, Button, Modal, message, DatePicker } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import validation from "../../../utils/validation/validation";
+import axiosCustom from "../../../Axios/AxiosCustom";
 
 export default function Edit(props) {
   const [data, setData] = useState({
@@ -13,12 +15,12 @@ export default function Edit(props) {
   });
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const handleOk = () => {
+  const accountEdit = async (data) => {
     const validate = validation(data, "accountedit");
     if (validate.length === 0) {
       setConfirmLoading(true);
-      axios
-        .put(`https://free-agent.herokuapp.com/user/${props.data._id}`, data)
+      return axiosCustom
+        .put(`/user/${props.data._id}`, data)
         .then((res) => {
           setConfirmLoading(false);
           message.success("Update account success", 1);
@@ -32,6 +34,17 @@ export default function Edit(props) {
     } else {
       validate.map((each) => message.error(each));
     }
+  };
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(accountEdit, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("get-users");
+    },
+  });
+
+  const handleOk = () => {
+    mutation.mutate(data);
   };
 
   const handleCancel = () => {

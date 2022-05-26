@@ -9,7 +9,7 @@ export default function AddNewUser({ visible, setVisible }) {
   const [data, setData] = useState({ username: "", email: "", password: "" });
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const AddUser = (data) => {
+  const addUser = (data) => {
     const validate = validation(data, "useradd");
     if (validate.length === 0) {
       setConfirmLoading(true);
@@ -24,18 +24,13 @@ export default function AddNewUser({ visible, setVisible }) {
           setConfirmLoading(false);
           message.error("Username or password existing, please try another", 1);
         });
-      setData({
-        username: "",
-        email: "",
-        password: "",
-      });
     } else {
       validate.map((each) => message.error(each));
     }
   };
 
   const queryClient = useQueryClient();
-  const mutation = useMutation(AddUser, {
+  const mutation = useMutation(addUser, {
     onSuccess: () => {
       queryClient.invalidateQueries("get-users");
     },

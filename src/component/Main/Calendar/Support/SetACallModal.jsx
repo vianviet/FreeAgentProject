@@ -22,8 +22,6 @@ function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
       return axios
         .post(`https://free-agent.herokuapp.com/calendar`, data)
         .then((res) => {
-          console.log(res);
-          console.log(res.data);
           if (res.status === 200) {
             setConfirmLoading(false);
             message.success("Add a new call success", 1);
@@ -48,11 +46,6 @@ function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
   const handleOk = () => {
     const data = newEvent;
     mutation.mutate(data);
-
-    // setTimeout(() => {
-    //   setVisibleSetACall(false);
-    //   setConfirmLoading(false);
-    // }, 1000);
   };
 
   const handleCancel = () => {
