@@ -3,45 +3,21 @@ import { usertitle } from "../../component/Header/svg";
 import { Input, Button, Table } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import columns from "../../component/Main/User/columns";
-// import data from "../../Data/user";
-import { useEffect } from "react";
-import { useQuery } from "react-query";
-import axios from "axios";
 import AddNewUser from "../../component/Main/User/Support/AddNewUser";
-import axiosCustom from "../../Axios/AxiosCustom";
+import useListUser from "../../Common/CustomHooks/useListUser";
 
 const { Search } = Input;
 export default function UserPage() {
-  const [user, setUser] = useState([]);
+  const { user, setUser, isFetching } = useListUser();
   const navigate = useNavigate();
   const { page } = useParams();
   const [visibleAdd, setVisibleAdd] = useState(false);
 
-  const getData = async () => {
-    return axiosCustom.get("user");
-  };
-  const { data, isFetching } = useQuery("get-users", getData, {
-    initialData: [],
-  });
-  useEffect(() => {
-    if (data.data) {
-      const list = data.data;
-      console.log("list", list);
-      const keylist = [];
-      list.forEach((each, index) => {
-        const key = index;
-        each = { ...each, key };
-        keylist.push(each);
-      });
-      setUser(keylist);
-    }
-  }, [data]);
-
   const onSearch = (e) => {
     const currValue = e.target.value;
     console.log(currValue);
-    if (data.data) {
-      const filteredData = data.data.filter((entry) =>
+    if (user) {
+      const filteredData = user.filter((entry) =>
         entry.username.includes(currValue)
       );
       setUser(filteredData);

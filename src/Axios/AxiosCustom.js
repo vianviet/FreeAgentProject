@@ -1,47 +1,46 @@
-import axios from 'axios';
-import isExpired from '../Auth/Support/isExpired';
+import axios from "axios";
+import isExpired from "../Auth/Support/isExpired";
 
-const generateToken = async(token) => {
-    try {
-        const res = await axios.post("https://free-agent.herokuapp.com/refreshToken", { token: token })
-        return res.data
-
-
-    } catch (err) {
-        localStorage.setItem("token", "")
-        window.location.reload();
-        console.log("err", err)
-    }
-
-}
+const generateToken = async (token) => {
+  try {
+    const res = await axios.post(`${process.env.REACT_APP_URL}/refreshToken`, {
+      token: token,
+    });
+    return res.data;
+  } catch (err) {
+    localStorage.setItem("token", "");
+    window.location.reload();
+    console.log("err", err);
+  }
+};
 
 const axiosCustom = axios.create({
-    // baseURL: 'http://localhost:3001',
-    baseURL: 'https://free-agent.herokuapp.com/',
-    headers: {
-        'Content-Type': 'application/json',
-    },
+  baseURL: process.env.REACT_APP_URL,
+  // baseURL: 'https://free-agent.herokuapp.com/',
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 axiosCustom.interceptors.request.use(
-    async function(config) {
-        const token = localStorage.getItem('token');
-        if (token) {
-            if (!isExpired(token)) {
-                const data = await generateToken(token);
-                console.log("generatedata", data)
-                config.headers["Authorization"] = await ("Bearer " + data.token);
-                await localStorage.setItem("token", data.token)
-
-            } else {
-                config.headers["Authorization"] = "Bearer " + localStorage.getItem('token');
-            }
-        }
-        return config
-    },
-    function(error) {
-        return Promise.reject(error);
+  async function (config) {
+    const token = localStorage.getItem("token");
+    if (token) {
+      if (!isExpired(token)) {
+        const data = await generateToken(token);
+        console.log("generatedata", data);
+        config.headers["Authorization"] = await ("Bearer " + data.token);
+        await localStorage.setItem("token", data.token);
+      } else {
+        config.headers["Authorization"] =
+          "Bearer " + localStorage.getItem("token");
+      }
     }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
 );
 // axiosCustom.interceptors.response.use(
 //     function(response) {
@@ -58,4 +57,4 @@ axiosCustom.interceptors.request.use(
 //         return Promise.reject(error);
 //     }
 // );
-export default axiosCustom
+export default axiosCustom;

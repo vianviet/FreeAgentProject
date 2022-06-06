@@ -1,57 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { accounttitle } from "../../component/Header/svg";
 import { Input, Button, Table } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
 import columns from "../../component/Main/Account/columns";
 import columnsmobile from "../../component/Main/Account/columnsmobile";
 import columnstablet from "../../component/Main/Account/columnstablet";
-import axios from "axios";
 import AddAccount from "../../component/Main/Account/Support/AddAccount";
-import axiosCustom from "../../Axios/AxiosCustom";
-import { useQuery } from "react-query";
+import useListUser from "../../Common/CustomHooks/useListUser";
 
 const { Search } = Input;
 
 export default function AccountPage() {
-  const [account, setAccount] = useState([]);
+  const { user, setUser, isFetching } = useListUser();
   const [visibleAdd, setVisibleAdd] = useState(false);
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const hasSelected = selectedRowKeys.length > 0;
   const [syncLoading, setSyncLoading] = useState(false);
 
-  const getData = async () => {
-    return axiosCustom.get("user");
-  };
-  const { data, isFetching } = useQuery("get-users", getData, {
-    initialData: [],
-  });
-
-  useEffect(() => {
-    if (data.data) {
-      const list = data.data;
-      console.log("list", list);
-      const keylist = [];
-      list.forEach((each, index) => {
-        const key = index;
-        each = { ...each, key };
-        each.expireddate = new Date(each.expireddate).toLocaleDateString();
-        each.syncdate = new Date(each.syncdate).toLocaleDateString();
-        keylist.push(each);
-      });
-      setAccount(keylist);
-    }
-  }, [data]);
   const onSearch = (e) => {
     const currValue = e.target.value;
     console.log(currValue);
-    if (data.data) {
-      const filteredData = data.data.filter((entry, index) => {
-        // entry = { ...entry, key: index };
-        // entry.expireddate = new Date(entry.expireddate).toLocaleDateString();
+    if (user) {
+      const filteredData = user.filter((entry, index) => {
         return entry.username.includes(currValue);
       });
-      setAccount(filteredData);
+      setUser(filteredData);
     }
   };
 
@@ -96,7 +69,7 @@ export default function AccountPage() {
             + Add New
           </Button>
           <AddAccount
-            data={data}
+            data={user}
             visibleAdd={visibleAdd}
             setVisibleAdd={setVisibleAdd}
           ></AddAccount>
@@ -112,7 +85,7 @@ export default function AccountPage() {
           },
         }}
         columns={columns}
-        dataSource={account}
+        dataSource={user}
       />
       <Table
         loading={isFetching}
@@ -124,7 +97,7 @@ export default function AccountPage() {
           },
         }}
         columns={columnstablet}
-        dataSource={account}
+        dataSource={user}
       />
       <Table
         loading={isFetching}
@@ -136,7 +109,7 @@ export default function AccountPage() {
           },
         }}
         columns={columnsmobile}
-        dataSource={account}
+        dataSource={user}
       />
     </>
   );

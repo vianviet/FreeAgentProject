@@ -16,7 +16,7 @@ import HeaderTable from "../../component/Main/Calendar/HeaderTable";
 import MonthEvent from "../../component/Main/Calendar/MonthEvent";
 import { calendartitle } from "../../component/Header/svg/index";
 import SelectText from "../../component/Main/Calendar/SelectText";
-import { Button } from "antd";
+import { Button, message, Select } from "antd";
 import {
   UploadOutlined,
   PlusCircleOutlined,
@@ -30,8 +30,12 @@ import { Modal } from "antd";
 import axios from "axios";
 import SetACallModal from "../../component/Main/Calendar/Support/SetACallModal";
 import moment from "moment";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import axiosCustom from "../../Axios/AxiosCustom";
+import { useSearchParams } from "react-router-dom";
+import SelectExcel from "../../component/Main/Calendar/Support/SelectExcel";
+import env from "react-dotenv";
+import Upload from "../../component/Main/Calendar/Support/Upload";
 
 const Agents = ["Agent 1", "Agent 2", "Agent 3", "Agent 4"];
 const Operator = [];
@@ -49,24 +53,40 @@ const localizer = dateFnsLocalizer({
 
 export default function CalendarPage() {
   const [daySelected, setDaySelected] = useState("");
-
-  const [eventsState, setEventsState] = useState([]);
+  const [id, setId] = useState("");
+  // const [eventsState, setEventsState] = useState([]);
   const [change, setChange] = useState(new Date("November, 2021"));
   const [visibleSetACall, setVisibleSetACall] = useState(false);
   const [clientVisible, setClientVisible] = useState(false);
+  // const [refresh, setRefresh] = console.log("eventsState", eventsState);
 
-  const getData = async () => {
-    return await axiosCustom.get(`https://free-agent.herokuapp.com/calendar`);
+  const queryClient = useQueryClient();
+
+  const getData = async (id) => {
+    console.log("idddd", id);
+    if (id) {
+      const result = await axiosCustom
+        .get(`/calendar/findOne/${id}`)
+        .then((res) => res.data);
+      // setEventsState(result.data);
+
+      console.log("result", result);
+      // setEventsState(result.data);
+      return result;
+    }
+    return;
   };
 
-  const { data } = useQuery("get-event", getData, {
+  const { data: eventsState } = useQuery(["get-event", id], () => getData(id), {
     initialData: [],
   });
 
   useEffect(() => {
-    console.log("data", data.data);
-    setEventsState(data.data);
-  }, [data]);
+    // console.log("data 123", data.data);
+
+    getData();
+    queryClient.invalidateQueries("get-event");
+  }, [id]);
 
   const handleNextMonth = () => {
     var news = new Date(change);
@@ -106,17 +126,7 @@ export default function CalendarPage() {
           >{`>`}</div>
         </div>
         <div className="right-calendar-header ">
-          <SelectText
-            style={{
-              width: 210,
-              height: 32,
-              textAlign: "left",
-              fontSize: 14,
-              fontWeight: 400,
-            }}
-            data={Agents}
-            name="Select Agent"
-          ></SelectText>
+          <SelectExcel setId={setId}></SelectExcel>
           <SelectText
             style={{
               width: 210,
@@ -148,12 +158,11 @@ export default function CalendarPage() {
             Set a Call
           </Button>
           <SetACallModal
+            id={id}
             setVisibleSetACall={setVisibleSetACall}
             visibleSetACall={visibleSetACall}
           ></SetACallModal>
-          <Button type="primary" icon={<UploadOutlined />}>
-            Upload
-          </Button>
+          <Upload></Upload>
 
           <Button
             onClick={() => setClientVisible(!clientVisible)}

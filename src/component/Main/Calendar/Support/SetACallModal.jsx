@@ -4,8 +4,9 @@ import React, { memo, useState } from "react";
 import axios from "axios";
 import validation from "../../../../utils/validation/validation";
 import { useMutation, useQueryClient } from "react-query";
+import axiosCustom from "../../../../Axios/AxiosCustom";
 
-function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
+function SetACallModal({ visibleSetACall, setVisibleSetACall, id }) {
   const [newEvent, setNewEvent] = useState({
     title: "",
     start: "",
@@ -19,8 +20,8 @@ function SetACallModal({ visibleSetACall, setVisibleSetACall }) {
     const validate = validation(newEvent, "calendar");
     if (validate.length === 0) {
       setConfirmLoading(true);
-      return axios
-        .post(`https://free-agent.herokuapp.com/calendar`, data)
+      return axiosCustom
+        .post(`/calendar/${id}`, data)
         .then((res) => {
           if (res.status === 200) {
             setConfirmLoading(false);
