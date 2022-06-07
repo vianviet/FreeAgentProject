@@ -15,7 +15,8 @@ const redux = createStore(store);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-  <GoogleOAuthProvider clientId="752048205177-1bkdg7eqg4sq17o9k8ktg6r3dtbcmkhb.apps.googleusercontent.com">
+  // <GoogleOAuthProvider clientId="752048205177-1bkdg7eqg4sq17o9k8ktg6r3dtbcmkhb.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId="752048205177-689bkt51faacgd7nn4j17tt1jibe5m96.apps.googleusercontent.com">
     <Provider store={redux}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
